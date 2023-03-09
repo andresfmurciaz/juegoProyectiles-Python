@@ -1,5 +1,6 @@
 #importamos pygame
 import pygame
+import random
 
 #CODIGO DE COLOR
 BLANCO =(255,255,255)
@@ -67,6 +68,17 @@ class Nave(pygame.sprite.Sprite):
         if self.rect.top < 0:
             self.rect.top = 0
 
+
+class Enemigo(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        self.image = pygame.image.load("img/enemigo1.png").convert()
+        self.image.set_colorkey(BLANCO)
+        self.rect = self.image.get_rect()
+        self.rect.x=random.randrange(W - self.rect.width)
+        self.rect.y=random.randrange(H - self.rect.height)
+
 #-------------------------------------------------------------
 #metodo de inicializacion
 pygame.init()
@@ -81,10 +93,13 @@ pygame.display.set_caption('juegoProyectiles-Parcial 1.')
 
 #grupo de sprites , instancion de objetos
 sprites = pygame.sprite.Group()
-nave= Nave()
+nave = Nave()
 sprites.add(nave)
 
-
+#nos da enemigos aleatoriamente
+for x in range(random.randrange(5)+1):
+    enemigo = Enemigo()
+    sprites.add(enemigo)
 #bucle del juego
 
 ejecutando= True
