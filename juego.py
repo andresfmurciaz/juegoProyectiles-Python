@@ -11,7 +11,8 @@ AZUL=(0,0,255)
 #PANTALLA.fill(BLANCO)
 #CREA UN RECTANGULO CON POSI Y TAMAÑO- parametros van por posi y despues tamaño
 #rectangulo1 = pygame.draw.rect(PANTALLA,ROJO,(100,50,100,50))
-
+#constante pantalla lleva la funcion para crear nuestra pantalla de juego
+W,H=1000,600
 # #CLASE DE LA NAVE
 class Nave(pygame.sprite.Sprite):
     def __init__(self):
@@ -20,40 +21,57 @@ class Nave(pygame.sprite.Sprite):
         self.image = pygame.image.load("img/navep.jpg").convert()
        # self.image.set_colorkey(BLANCO)
         self.rect = self.image.get_rect()
-        self.rect.center= (W // 2, H // 2)
+        self.rect.center= (500,500)
         #velocidad de la nave inicial
         self.velocidad_x=0
+        # velocidad de la nave inicial
+        self.velocidad_y = 0
 #actualiza cada vez que el bucle de una vuelta
     def update(self):
     
 
 #velocidad predeterminada
         self.velocidad_x=0
+        self.velocidad_y = 0
         #para que las teclas esten pulsadas
         teclas=pygame.key.get_pressed()
         #izquierda
         if teclas[pygame.K_a]:
             self.velocidad_x=-20
-            #derecha
+        #derecha
         if teclas[pygame.K_d]:
             self.velocidad_x=20
-            #actualiza la posi del personaje 
+        # arriba
+        if teclas[pygame.K_w]:
+            self.velocidad_y = -20
+        # abajo
+        if teclas[pygame.K_s]:
+            self.velocidad_y = 20
+
+
+      #actualiza la posi del personaje
         self.rect.x += self.velocidad_x
-        
+        self.rect.y += self.velocidad_y
+
+
+#hace una margen
         if self.rect.left < 0:
             self.rect.left=0
-            
-            
+
         if self.rect.right > W :
             self.rect.right = W
-        
-        
+
+        if self.rect.bottom > H:
+            self.rect.bottom = H
+
+        if self.rect.top < 0:
+            self.rect.top = 0
+
 #-------------------------------------------------------------
 #metodo de inicializacion
 pygame.init()
 
-#constante pantalla lleva la funcion para crear nuestra pantalla de juego
-W,H=1000,600
+
 pantalla = pygame.display.set_mode((W,H))
 #ACELERAR O DESACELERAR EL JUEGO
 FPS =20
