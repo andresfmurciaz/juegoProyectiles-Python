@@ -12,21 +12,42 @@ AZUL=(0,0,255)
 #CREA UN RECTANGULO CON POSI Y TAMAÑO- parametros van por posi y despues tamaño
 #rectangulo1 = pygame.draw.rect(PANTALLA,ROJO,(100,50,100,50))
 
-#CLASE DE LA NAVE
+# #CLASE DE LA NAVE
 class Nave(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((200,200))
-        self.image.fill(BLANCO)
+        
+        self.image = pygame.image.load("img/navep.jpg").convert()
+       # self.image.set_colorkey(BLANCO)
         self.rect = self.image.get_rect()
         self.rect.center= (W // 2, H // 2)
-
+        #velocidad de la nave inicial
+        self.velocidad_x=0
 #actualiza cada vez que el bucle de una vuelta
     def update(self):
-        self.rect.y += 10
-        if self.rect.top > H:
-            self.rect.bottom=0
+    
 
+#velocidad predeterminada
+        self.velocidad_x=0
+        #para que las teclas esten pulsadas
+        teclas=pygame.key.get_pressed()
+        #izquierda
+        if teclas[pygame.K_a]:
+            self.velocidad_x=-20
+            #derecha
+        if teclas[pygame.K_d]:
+            self.velocidad_x=20
+            #actualiza la posi del personaje 
+        self.rect.x += self.velocidad_x
+        
+        if self.rect.left < 0:
+            self.rect.left=0
+            
+            
+        if self.rect.right > W :
+            self.rect.right = W
+        
+        
 #-------------------------------------------------------------
 #metodo de inicializacion
 pygame.init()
@@ -35,7 +56,7 @@ pygame.init()
 W,H=1000,600
 pantalla = pygame.display.set_mode((W,H))
 #ACELERAR O DESACELERAR EL JUEGO
-FPS =500
+FPS =20
 RELOJ= pygame.time.Clock()
 #title
 pygame.display.set_caption('juegoProyectiles-Parcial 1.')
