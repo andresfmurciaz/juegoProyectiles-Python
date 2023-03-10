@@ -18,15 +18,20 @@ W,H=1000,600
 class Nave(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        
-        self.image = pygame.image.load("img/navep.jpg").convert()
-       # self.image.set_colorkey(BLANCO)
+
+        self.image = pygame.transform.scale(pygame.image.load("img/navep.jpg").convert(), (100, 100))
+
+        # self.image.set_colorkey(BLANCO)
         self.rect = self.image.get_rect()
         self.rect.center= (500,500)
         #velocidad de la nave inicial
         self.velocidad_x=0
         # velocidad de la nave inicial
         self.velocidad_y = 0
+
+
+
+
 
 
 #actualiza cada vez que el bucle de una vuelta
@@ -49,6 +54,11 @@ class Nave(pygame.sprite.Sprite):
         if teclas[pygame.K_s]:
             self.velocidad_y = 20
 
+        # abajo
+        if teclas[pygame.K_SPACE]:
+            nave.disparo()
+          #  nave.disparo2()
+
       #actualiza la posi del personaje
         self.rect.x += self.velocidad_x
         self.rect.y += self.velocidad_y
@@ -65,6 +75,16 @@ class Nave(pygame.sprite.Sprite):
 
         if self.rect.top < 0:
             self.rect.top = 0
+
+
+    def disparo(self):
+        bala = Disparos(self.rect.centerx,self.rect.top + 30)
+        balas.add(bala)
+
+
+    def disparo2(self):
+        bala = Disparos(self.rect.centerx + 20, self.rect.top + 40)
+        balas.add(bala)
 
 
 class Enemigo(pygame.sprite.Sprite):
@@ -102,6 +122,22 @@ class Enemigo(pygame.sprite.Sprite):
         if self.rect.top < 0:
             self.velocidad_y += 1
 
+
+class Disparos (pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        super().__init__()
+        self.image= pygame.transform.scale(pygame.image.load("img/balaroja.png").convert(),(10,20))
+
+        self.rect = self.image.get_rect()
+        self.rect.bottom = y
+        self.rect.centerx = x
+
+    def update(self):
+        self.rect.y -= 25
+        if self.rect.bottom < 0:
+            self.kill()
+
+
 #-------------------------------------------------------------
 #metodo de inicializacion
 pygame.init()
@@ -117,6 +153,8 @@ pygame.display.set_caption('juegoProyectiles-Parcial 1.')
 #grupo de sprites , instancion de objetos
 sprites = pygame.sprite.Group()
 enemigos = pygame.sprite.Group()
+balas =pygame.sprite.Group()
+
 
 
 
@@ -139,6 +177,8 @@ while ejecutando:
     # LLAMAMOS EL METODO PARA LA ACELERACION DEL FONDO
     RELOJ.tick(FPS)
 
+
+
     #EVENTOS
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -149,6 +189,7 @@ while ejecutando:
     #ACTUALIZACION DE SPRITES- actuali
     sprites.update()
     enemigos.update()
+    balas.update()
 
 #colisiona a nave y imagen de fuego
     colision= pygame.sprite.spritecollide(nave,enemigos,False)
@@ -163,6 +204,10 @@ while ejecutando:
     pantalla.fill(NEGRO)
     sprites.draw(pantalla)
     enemigos.draw(pantalla)
+
+    balas.draw(pantalla)
+
+#actualiza el contenido de pantalla
     pygame.display.flip()
 
 #CIERRA LA CLASE
