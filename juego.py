@@ -27,10 +27,10 @@ class Nave(pygame.sprite.Sprite):
         self.velocidad_x=0
         # velocidad de la nave inicial
         self.velocidad_y = 0
+
+
 #actualiza cada vez que el bucle de una vuelta
     def update(self):
-    
-
 #velocidad predeterminada
         self.velocidad_x=0
         self.velocidad_y = 0
@@ -49,17 +49,15 @@ class Nave(pygame.sprite.Sprite):
         if teclas[pygame.K_s]:
             self.velocidad_y = 20
 
-
       #actualiza la posi del personaje
         self.rect.x += self.velocidad_x
         self.rect.y += self.velocidad_y
 
-
 #hace una margen
         if self.rect.left < 0:
-            self.rect.left=0
+            self.rect.left = 0
 
-        if self.rect.right > W :
+        if self.rect.right > W:
             self.rect.right = W
 
         if self.rect.bottom > H:
@@ -78,6 +76,31 @@ class Enemigo(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x=random.randrange(W - self.rect.width)
         self.rect.y=random.randrange(H - self.rect.height)
+        # velocidad de la nave inicial
+
+        self.velocidad_x = random.randrange(1, 10)
+        self.velocidad_y = random.randrange(1, 10)
+
+    def update(self):
+        # actualiza la posi del personaje
+        self.rect.x += self.velocidad_x
+        self.rect.y += self.velocidad_y
+
+        # Limita el margen izquierdo
+        if self.rect.left < 0:
+            self.velocidad_x += 1
+
+        # Limita el margen derecho
+        if self.rect.right > W:
+            self.velocidad_x -= 1
+
+        # Limita el margen inferior
+        if self.rect.bottom > H:
+            self.velocidad_y -= 1
+
+        # Limita el margen superior
+        if self.rect.top < 0:
+            self.velocidad_y += 1
 
 #-------------------------------------------------------------
 #metodo de inicializacion
@@ -93,13 +116,20 @@ pygame.display.set_caption('juegoProyectiles-Parcial 1.')
 
 #grupo de sprites , instancion de objetos
 sprites = pygame.sprite.Group()
+enemigos = pygame.sprite.Group()
+
+
+
 nave = Nave()
 sprites.add(nave)
 
+enemigo = Enemigo()
+enemigos.add(enemigo)
+
+
 #nos da enemigos aleatoriamente
-for x in range(random.randrange(5)+1):
-    enemigo = Enemigo()
-    sprites.add(enemigo)
+#for x in range(random.randrange(5)+1):
+
 #bucle del juego
 
 ejecutando= True
@@ -118,10 +148,21 @@ while ejecutando:
 
     #ACTUALIZACION DE SPRITES- actuali
     sprites.update()
+    enemigos.update()
+
+#colisiona a nave y imagen de fuego
+    colision= pygame.sprite.spritecollide(nave,enemigos,False)
+    if colision:
+       enemigo.image = pygame.image.load("img/navep.jpg")
+       enemigo.velocidad_y += 20
+    elif enemigo.rect.top > W :
+        #elimina objetos
+        enemigo.kill()
 
 #LE DA EL FONDO DE PANTALLA
     pantalla.fill(NEGRO)
     sprites.draw(pantalla)
+    enemigos.draw(pantalla)
     pygame.display.flip()
 
 #CIERRA LA CLASE
