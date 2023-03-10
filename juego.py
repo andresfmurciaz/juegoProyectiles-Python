@@ -23,6 +23,11 @@ class Nave(pygame.sprite.Sprite):
 
         # self.image.set_colorkey(BLANCO)
         self.rect = self.image.get_rect()
+        self.radius = 30
+      #  pygame.draw.circle(self.image,ROJO,self.rect.center,self.radius)
+
+
+
         self.rect.center= (500,500)
         #velocidad de la nave inicial
         self.velocidad_x=0
@@ -92,11 +97,15 @@ class Enemigo(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = pygame.image.load("img/enemigo1.png").convert()
-        self.image.set_colorkey(BLANCO)
         self.rect = self.image.get_rect()
+
+        self.radius = 30
+        #.draw.circle(self.image, ROJO, self.rect.center, self.radius)
+
         self.rect.x=random.randrange(W - self.rect.width)
         self.rect.y=random.randrange(H - self.rect.height)
         # velocidad de la nave inicial
+
 
         self.velocidad_x = random.randrange(1, 10)
         self.velocidad_y = random.randrange(1, 10)
@@ -192,13 +201,19 @@ while ejecutando:
     balas.update()
 
 #colisiona a nave y imagen de fuego
-    colision= pygame.sprite.spritecollide(nave,enemigos,False)
-    if colision:
+    colision_nave= pygame.sprite.spritecollide(nave,enemigos,False,pygame.sprite.collide_circle)
+    colision = pygame.sprite.groupcollide(enemigos,balas,False,True)
+
+    if colision_nave:
        enemigo.image = pygame.image.load("img/navep.jpg")
        enemigo.velocidad_y += 20
     elif enemigo.rect.top > W :
         #elimina objetos
         enemigo.kill()
+
+
+
+
 
 #LE DA EL FONDO DE PANTALLA
     pantalla.fill(NEGRO)
