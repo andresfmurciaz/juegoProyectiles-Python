@@ -12,9 +12,9 @@ consolas= pygame.font.match_font('consolas')
 times = pygame.font.match_font('times')
 arial= pygame.font.match_font('arial')
 
+
 #sonidos
 pygame.mixer.init()
-
 
 disparo = pygame.mixer.Sound('audio/disparo.wav')
 
@@ -28,8 +28,9 @@ explosiones_random = [pygame.mixer.Sound('audio/explo1.wav')
                     , pygame.mixer.Sound('audio/explo2.wav')]
 
 
-
 ambiente.play()
+
+#
 
 
 #poner fondo de pantalla
@@ -43,8 +44,8 @@ class Nave(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.transform.scale(pygame.image.load("img/navep.jpg").convert(), (100, 100))
-
+        self.image = pygame.transform.scale(pygame.image.load("img/naveRecorte.png").convert(), (100, 100))
+        self.image.set_colorkey(NEGRO)
         # self.image.set_colorkey(BLANCO)
         self.rect = self.image.get_rect()
         self.radius = 30
@@ -134,13 +135,16 @@ class Meteoritos(pygame.sprite.Sprite):
         super().__init__()
         self.img_aleatoria = random.randrange(3)
         if self.img_aleatoria ==0:
-            self.image = pygame.transform.scale(pygame.image.load("img/balaroja.png").convert(),(100,100))
+            self.image = pygame.transform.scale(pygame.image.load("img/asteRecorte.png").convert(),(100,100))
+            self.image.set_colorkey(NEGRO)
             self.radius=50
         if self.img_aleatoria == 1:
-            self.image = pygame.transform.scale(pygame.image.load("img/balaroja.png").convert(), (50, 50))
+            self.image = pygame.transform.scale(pygame.image.load("img/asteRecorte.png").convert(), (50, 50))
+            self.image.set_colorkey(NEGRO)
             self.radius = 25
         if self.img_aleatoria == 2:
-            self.image = pygame.transform.scale(pygame.image.load("img/balaroja.png").convert(), (25, 25))
+            self.image = pygame.transform.scale(pygame.image.load("img/asteRecorte.png").convert(), (25, 25))
+            self.image.set_colorkey(NEGRO)
             self.radius = 12
 
         self.rect = self.image.get_rect()
@@ -163,7 +167,11 @@ class Enemigo(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load("img/enemigo1.png").convert()
+
+        self.image = pygame.transform.scale(pygame.image.load("img/ene1-removebg-preview.png").convert(), (100, 100))
+        self.image.set_colorkey(NEGRO)
+
+        self.image.set_colorkey(NEGRO)
         self.rect = self.image.get_rect()
 
         self.radius = 30
@@ -205,7 +213,9 @@ class Enemigo2(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load("img/enemigo1.png").convert()
+        self.image = pygame.transform.scale(pygame.image.load("img/ene2-removebg-preview.png").convert(), (200, 200))
+        self.image.set_colorkey(NEGRO)
+
         self.rect = self.image.get_rect()
 
         self.radius = 30
@@ -248,9 +258,9 @@ class Enemigo3(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load("img/enemigo1.png").convert()
+        self.image = pygame.transform.scale(pygame.image.load("img/ene3-removebg-preview.png").convert(), (90, 40))
+        self.image.set_colorkey(NEGRO)
         self.rect = self.image.get_rect()
-
         self.radius = 30
         #.draw.circle(self.image, ROJO, self.rect.center, self.radius)
 
@@ -290,9 +300,9 @@ class Enemigo4(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load("img/enemigo1.png").convert()
+        self.image = pygame.transform.scale(pygame.image.load("img/enemigo1Recorte.png").convert(), (90, 40))
+        self.image.set_colorkey(NEGRO)
         self.rect = self.image.get_rect()
-
         self.radius = 30
         #.draw.circle(self.image, ROJO, self.rect.center, self.radius)
 
@@ -332,7 +342,8 @@ class Enemigo5(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load("img/enemigo1.png").convert()
+        self.image = pygame.image.load("img/enemigo1Recorte.png").convert()
+        self.image.set_colorkey(NEGRO)
         self.rect = self.image.get_rect()
 
         self.radius = 30
@@ -378,8 +389,8 @@ class Enemigo5(pygame.sprite.Sprite):
 class Disparos (pygame.sprite.Sprite):
     def __init__(self,x,y):
         super().__init__()
-        self.image= pygame.transform.scale(pygame.image.load("img/balaroja.png").convert(),(10,20))
-
+        self.image= pygame.transform.scale(pygame.image.load("img/balarojaRecorte.png").convert(),(10,20))
+        self.image.set_colorkey(NEGRO)
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
@@ -394,6 +405,9 @@ class Disparos (pygame.sprite.Sprite):
 #metodo de inicializacion
 pygame.init()
 pantalla = pygame.display.set_mode((W,H))
+
+fondo = pygame.image.load("img/fondo2.jpg")
+
 #sistemas de puntuacion
 puntuacion=0000000
 def muestra_texto(pantalla,fuente,texto,color,dimensiones,x,y):
@@ -527,14 +541,17 @@ while ejecutando:
     #    enemigo.kill()
 
     if colision_meteoritos:
-        print('hola')
+
+        puntuacion -= 10
 
 
 
 
 
 #LE DA EL FONDO DE PANTALLA
-    pantalla.fill(NEGRO)
+
+    fondo = pygame.transform.scale(pygame.image.load("img/fondo2.jpg").convert(), (1000, 600))
+    pantalla.blit(fondo, (0, 0))
     sprites.draw(pantalla)
     enemigos_1.draw(pantalla)
     enemigos_2.draw(pantalla)
