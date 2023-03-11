@@ -12,6 +12,25 @@ consolas= pygame.font.match_font('consolas')
 times = pygame.font.match_font('times')
 arial= pygame.font.match_font('arial')
 
+#sonidos
+pygame.mixer.init()
+
+
+disparo = pygame.mixer.Sound('audio/disparo.wav')
+
+moneda = pygame.mixer.Sound('audio/moneda.wav')
+
+poder1 = pygame.mixer.Sound('audio/poder1.wav')
+
+ambiente = pygame.mixer.Sound('audio/ambiente.mp3')
+
+explosiones_random = [pygame.mixer.Sound('audio/explo1.wav')
+                    , pygame.mixer.Sound('audio/explo2.wav')]
+
+
+
+ambiente.play()
+
 
 #poner fondo de pantalla
 #PANTALLA.fill(BLANCO)
@@ -90,11 +109,13 @@ class Nave(pygame.sprite.Sprite):
     def disparo(self):
         bala = Disparos(self.rect.centerx,self.rect.top + 30)
         balas.add(bala)
+        disparo.play()
 
 
     def disparo2(self):
         bala = Disparos(self.rect.centerx + 20, self.rect.top + 40)
         balas.add(bala)
+        disparo.play()
 
 class Meteoritos(pygame.sprite.Sprite):
     
@@ -458,15 +479,18 @@ while ejecutando:
 
     if colision_disparos_1:
         puntuacion += 10
-
+        explosiones_random[random.randrange(0,1)].play()
     if colision_disparos_2:
         puntuacion += 25
+        explosiones_random[random.randrange(0,1)].play()
 
     if colision_disparos_3:
         puntuacion += 50
+        explosiones_random[random.randrange(0,1)].play()
 
     if colision_disparos_4:
         puntuacion += 100
+        explosiones_random[random.randrange(0,1)].play()
 
 
     if not enemigos_1 and not enemigos_2 and not enemigos_3 and not enemigos_4:
@@ -510,7 +534,7 @@ while ejecutando:
     balas.draw(pantalla)
 
 
-    muestra_texto(pantalla,consolas,str(puntuacion),ROJO,40,700,50)
+    muestra_texto(pantalla,consolas,str(puntuacion).zfill(6),ROJO,40,900,40)
 #actualiza el contenido de pantalla
     pygame.display.flip()
 
