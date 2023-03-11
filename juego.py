@@ -58,6 +58,12 @@ class Nave(pygame.sprite.Sprite):
         # velocidad de la nave inicial
         self.velocidad_y = 0
 
+        #disparos
+        self.cadencia = 400
+        self.ultimo_disparo = pygame.time.get_ticks()
+
+
+
 
 
 
@@ -83,9 +89,14 @@ class Nave(pygame.sprite.Sprite):
         if teclas[pygame.K_s]:
             self.velocidad_y = 20
 
-        # abajo
+        # dispara
         if teclas[pygame.K_SPACE]:
-            nave.disparo()
+            ahora = pygame.time.get_ticks()
+            if ahora - self.ultimo_disparo > self.cadencia:
+
+               nave.disparo()
+               self.ultimo_disparo = ahora
+
           #  nave.disparo2()
 
       #actualiza la posi del personaje
