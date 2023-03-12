@@ -404,6 +404,31 @@ class Disparos (pygame.sprite.Sprite):
 #-------------------------------------------------------------
 #metodo de inicializacion
 pygame.init()
+
+
+#------
+screen = pygame.display.set_mode((800, 600))
+game_over = False
+
+
+def game_lost_message():
+    font = pygame.font.Font(None, 36)
+    text = font.render("¡Perdiste el juego!", True, (255, 0, 0))
+    text_rect = text.get_rect(center=(screen.get_width()/2, screen.get_height()/2))
+    screen.blit(text, text_rect)
+    pygame.display.update()
+
+
+# Comprueba si el usuario perdió el juego
+
+
+
+
+#---------------------------------
+
+
+
+
 pantalla = pygame.display.set_mode((W,H))
 
 fondo = pygame.image.load("img/fondo2.jpg")
@@ -458,6 +483,9 @@ for x in range(10):
 #bucle del juego
 
 ejecutando= True
+
+
+
 
 while ejecutando:
 
@@ -566,6 +594,9 @@ while ejecutando:
 #actualiza el contenido de pantalla
     pygame.display.flip()
 
+    if puntuacion == -30:
+        ejecutando = False
+        game_lost_message()
 
 #CIERRA LA CLASE
 pygame.quit()
